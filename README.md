@@ -2,7 +2,7 @@
 此python文件可将指定文件夹下的所有.ttf中文字体和.otf中文字体的文件名批量重命名为中文。(如果没有中文名将用英文名代替)
 
 
-##Usage##
+## Usage
 
 rename_font.py -d [target folder with .ttfs]
 
