@@ -30,12 +30,16 @@ def contains_chinese(text):
 def get_font_chinese_name(ttfFile):
     font = TTFont(ttfFile)
     name_dict = {}  #名称字典, 如果有多个中文名，按优先级序列选择（简体中文>繁体中文,windows>mac），如果没有中文名，则按优先级选择英文名（英语美国>英语英国,windows>mac）
-    c_name_priority = [2052,3076, 36 ,1028, 19]
+    c_name_priority = [2052,3076, 33, 36 ,1028, 19]
     e_name_priority = [1033,0,2057]
     for i,font_name in enumerate(font['name'].names):
         # print(i,font_name,font_name.langID,font_name.nameID)
         if font_name.nameID == 4: #包含字体家族详细信息:
-            name_dict[font_name.langID] = font_name.toUnicode()
+            try:
+                name_dict[font_name.langID] = font_name.toUnicode()
+            except Exception as e:
+                # print(e)
+                continue
 
     # 按优先级序列搜索中文名，如果存在中文名直接返回中文名
     for lang_id in c_name_priority:
@@ -69,7 +73,6 @@ if __name__ == "__main__":
                     c_name = get_font_chinese_name(ttfFile)
                     if c_name==-1: continue
                     newFileName = os.path.join(root,c_name+fileExtension)
-                    print(newFileName)
                     rename_file(ttfFile,newFileName)
                 except Exception as e:
                     print(e)
